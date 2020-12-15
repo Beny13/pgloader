@@ -43,19 +43,11 @@ FROM debian:stable-slim
       && rm -rf /var/lib/apt/lists/*
 
   COPY --from=builder /opt/src/pgloader/build/bin/pgloader /usr/local/bin
-  ADD migration_playbook /usr/local/bin
+  ADD pgloader_schema /usr/local/bin
+  ADD pgloader_data /usr/local/bin
   ADD freetds.conf /etc/freetds/freetds.conf
 
-  ENV MSSQL_USER=
-  ENV MSSQL_PASS=
-  ENV MSSQL_SERVER_ADDR=
-  ENV SOURCE_DB=
-
-  ENV PSQL_USER=
-  ENV PSQL_PASS=
-  ENV PSQL_SERVER_ADDR=
-  ENV DEST_DB=
-
-  CMD /usr/local/bin/pgloader --on-error-stop /usr/local/bin/migration_playbook
+  # TODO handle schema and data
+  CMD /usr/local/bin/pgloader --on-error-stop /usr/local/bin/pgloader_schema 
 
   LABEL maintainer="Dimitri Fontaine <dim@tapoueh.org>"

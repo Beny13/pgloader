@@ -2,7 +2,9 @@ load database
      from mssql://{{mssql_user}}:{{mssql_pass}}@{{mssql_server_addr}}/{{source_db}}
      into postgresql://{{psql_user}}:{{psql_pass}}@{{psql_server_addr}}/{{dest_db}}
 
-with schema only, preserve index names
+with preserve index names
+
+excluding table names like 'Audit', 'ObjetServiceHisto', 'ObjetProcessHisto', 'ReportStats', 'LsdStats', 'OrderQueue2' in schema 'dbo'
 
 cast type datetime2 to timestamptz to timestamptz drop default,
      type datetime to timestamptz to timestamptz drop default,
