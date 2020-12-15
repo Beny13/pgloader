@@ -43,11 +43,11 @@ FROM debian:stable-slim
       && rm -rf /var/lib/apt/lists/*
 
   COPY --from=builder /opt/src/pgloader/build/bin/pgloader /usr/local/bin
-  ADD pgloader_schema /usr/local/bin
-  ADD pgloader_data /usr/local/bin
+  ADD pgloader_schema /root
+  ADD pgloader_data /root
   ADD freetds.conf /etc/freetds/freetds.conf
 
-  # TODO handle schema and data
-  CMD /usr/local/bin/pgloader --on-error-stop /usr/local/bin/pgloader_schema 
+  WORKDIR /root
+  CMD bash -c "/usr/local/bin/pgloader --on-error-stop pgloader_schema && /usr/local/bin/pgloader --on-error-stop pgloader_data"
 
   LABEL maintainer="Dimitri Fontaine <dim@tapoueh.org>"
